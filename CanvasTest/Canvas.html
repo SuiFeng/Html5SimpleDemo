@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Canvas Tech</title>
+<style>
+
+<!--#myCanvas {width:100%; height:100%;}-->
+</style>
+
+</head>
+
+<body>
+<canvas id="myCanvas"></canvas>
+
+<script type="text/javascript">
+
+var canvas=document.getElementById('myCanvas');
+
+var ctx=canvas.getContext('2d');
+ctx.canvas.width  = window.innerWidth;
+ ctx.canvas.height = window.innerHeight;
+//ctx.fillStyle='#FF0000';
+//ctx.fillRect(0,0,80,100);
+ctx.strokeStyle = '#00eeee';
+ctx.beginPath();
+ctx.moveTo(50,50);
+ctx.lineTo(100,100);
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(100,100);
+ctx.lineTo(100,200);
+ctx.lineTo(200,200);
+ctx.lineTo(200,100);
+ctx.lineTo(100,100);
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(400,300);
+ctx.arc(300,300,100,0,Math.PI*2,true);
+ctx.stroke();
+
+//画圆
+function drawCircle(x,y) {
+	ctx.beginPath();
+	ctx.moveTo(x+100,y);
+	ctx.arc(x,y,100,0,Math.PI*2,true);
+	ctx.stroke();
+}
+
+/*点击画圆
+function clickevent(e) {
+	//alert("click!");
+	var retu = getCursorPosition(e);
+	//alert(retu[0]+","+retu[1]);
+	drawCircle(retu[0], retu[1]);
+}
+*/
+
+var draw = false;
+
+function mousedownEvent(e) {
+	draw = true;
+}
+
+function mouseupEvent(e) {
+	draw = false;
+	oldpoint = null;
+}
+
+/*鼠标跟随画圆
+function mousemoveEvent(e) {
+	var retu = getCursorPosition(e);
+	drawCircle(retu[0], retu[1]);
+}
+//*/
+
+//*画板
+var oldpoint = null;
+
+function mousemoveEvent(e) {
+	if(draw == false) return;
+	var retu = getCursorPosition(e);
+	if(oldpoint) {
+		ctx.moveTo(oldpoint[0],oldpoint[1]);
+		ctx.lineTo(retu[0], retu[1]);
+		ctx.stroke();
+	}
+	oldpoint = retu;
+}
+//*/
+
+function getCursorPosition(e) {
+    var x;
+    var y;
+    if (e.pageX || e.pageY) {
+      x = e.pageX;
+      y = e.pageY;
+    }
+    else {
+      x = e.clientX + document.body.scrollLeft +
+           document.documentElement.scrollLeft;
+      y = e.clientY + document.body.scrollTop +
+           document.documentElement.scrollTop;
+    }
+	return [x, y];
+}
+
+//点击画圆
+//canvas.addEventListener("click",clickevent,false);
+
+//画图
+canvas.addEventListener("mousemove", mousemoveEvent,false);
+canvas.addEventListener("mousedown",mousedownEvent,false);
+canvas.addEventListener("mouseup",mouseupEvent,false);
+</script>
+
+</body>
+</html>
