@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Canvas Image</title>
+<style>
+
+body{margin:0 auto; padding:0px;}
+#selectDiv {width:100px; height:100px; border:2px #090 solid; left:10px; top:100px; position:absolute;}
+
+</style>
+</head>
+
+<body>
+<div id="selectDiv" onmousedown="divMouseDown" onmouseup="divMouseUp"></div>
+<canvas id="mycanvas"></canvas>
+
+<script type="text/javascript">
+var canvas = document.getElementById("mycanvas");
+var ctx = canvas.getContext("2d");
+ctx.canvas.width  = window.innerWidth;
+ ctx.canvas.height = window.innerHeight;
+ 
+//
+var image = new Image();
+image.onload = function() {
+	ctx.drawImage(image,10, 100);
+	ctx.drawImage(image,0,0,100,100,600,100,100,100);
+}
+image.src = "Images/image.jpg";
+
+//var canMove = false;
+var selectDiv = document.getElementById("selectDiv");
+/*
+function divMouseDown(e) {
+	canMove = true;
+}
+function divMouseUp(e) {
+	canMove = false;
+}
+*/
+
+function mouseMove(e) {
+	//if(canMove) {
+		var cusor = getCursorPosition(e);
+		if(cusor[0] < 60) cusor[0] = 60;
+		if(cusor[0] > 460) cusor[0] = 460;
+		if(cusor[1] < 150) cusor[1] = 150;
+		if(cusor[1] > 465) cusor[1] = 465;
+		selectDiv.style.left = cusor[0]-50+"px";
+		selectDiv.style.top = cusor[1]-50+"px";
+		//if(cusor[0] >= 60 && cusor[1] <= 460 && cusor[1] >=150 && cusor[1] <= 465) {
+			ctx.clearRect(600,100,200,215);
+			
+			ctx.drawImage(image,cusor[0]-60,cusor[1]-150,100,100,600,100,100,100);
+		//}
+	//}
+}
+
+function getCursorPosition(e) {
+    var x;
+    var y;
+    if (e.pageX || e.pageY) {
+      x = e.pageX;
+      y = e.pageY;
+    }
+    else {
+      x = e.clientX + document.body.scrollLeft +
+           document.documentElement.scrollLeft;
+      y = e.clientY + document.body.scrollTop +
+           document.documentElement.scrollTop;
+    }
+	return [x, y];
+}
+
+canvas.addEventListener("mousemove",mouseMove,false);
+</script>
+</body>
+</html>
